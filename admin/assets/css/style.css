@@ -1,0 +1,81 @@
+    :root {
+      --primary-dark: #071022;
+      --primary-light: #0f2940;
+      --accent: #ffb020;
+      --accent2: #3ad7c0;
+      --muted: #8b98a6;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background-color: var(--primary-dark) !important;
+    }
+
+    .sidebar-brand {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .sidebar-brand:hover {
+      color: var(--accent2);
+    }
+
+    .sidebar .nav-item .nav-link {
+      color: var(--white);
+      transition: all 0.3s ease;
+    }
+
+    .sidebar .nav-item .nav-link:hover {
+      background-color: var(--accent);
+      color: var(--primary-dark);
+      border-radius: 6px;
+    }
+
+    .sidebar .nav-item.active .nav-link {
+      background-color: var(--accent2);
+      color: var(--white);
+    }
+
+    .bg-collapse {
+      background-color: var(--primary-light);
+    }
+
+    .collapse-inner .collapse-item {
+      color: var(--muted) !important;
+      font-weight: 500;
+    }
+
+    .collapse-inner .collapse-item:hover {
+      color: var(--accent) !important;
+    }
+
+    /* Topbar */
+    .topbar {
+      background: var(--primary-light);
+    }
+
+    .topbar .nav-link,
+    .topbar .navbar-nav .nav-item .nav-link {
+      color: var(--white);
+    }
+
+    .topbar .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .btn-custom {
+      background-color: var(--accent);
+      color: var(--primary-dark);
+      font-weight: 600;
+      border: none;
+    }
+
+    .btn-custom:hover {
+      background-color: var(--accent2);
+      color: var(--white);
+    }
