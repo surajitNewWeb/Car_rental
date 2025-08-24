@@ -1,16 +1,20 @@
 <?php
 session_start();
-if(!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-?>
-<?php 
 include("admin_inc/db.php");
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
- ?>
+
+// Check if admin is logged in
+if (!isset($_SESSION['admin_id'])) {
+    header("Location:login.php"); // redirect if not logged in
+    exit();
+}
+
+// If logged in, you can access admin details
+$adminName  = $_SESSION['admin_name'];
+$adminEmail = $_SESSION['admin_email'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 

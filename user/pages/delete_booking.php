@@ -1,12 +1,20 @@
 <?php
-session_start();
+include("dash_head.php");
 include("../config/db.php");
 
-// check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+// Check login
+if(!isset($_SESSION['user_id'])){
+    header("location: login.php");
     exit;
 }
+
+$user_id = $_SESSION['user_id'];
+$message = "";
+
+// Fetch user details
+$user_sql = "SELECT * FROM users WHERE id='$user_id'";
+$user_res = mysqli_query($con, $user_sql);
+$user = mysqli_fetch_assoc($user_res);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'])) {
     $booking_id = intval($_POST['booking_id']);

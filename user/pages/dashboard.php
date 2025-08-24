@@ -1,4 +1,3 @@
-
 <?php
 include("dash_head.php");
 include("../config/db.php");
@@ -15,11 +14,11 @@ $user_id = $_SESSION['user_id'];
 $user_sql = "SELECT username FROM users WHERE id='$user_id'";
 $user_res = mysqli_query($con, $user_sql);
 $user_row = mysqli_fetch_assoc($user_res);
-$username = $user_row['username'] ?? "Guest";
+$user_name = $user_row['username'] ?? "Guest";
 
 // Fetch user stats
-$total_bookings = mysqli_fetch_assoc(mysqli_query($con, "SELECT COUNT(*) AS total FROM bookings WHERE user_id='$user_id'"))['total'];
-$upcoming_bookings = mysqli_fetch_assoc(mysqli_query($con, "SELECT COUNT(*) AS total FROM bookings WHERE user_id='$user_id' AND pickup_date >= CURDATE()"))['total'];
+$total_bookings = mysqli_fetch_assoc(mysqli_query($con, "SELECT COUNT(*) AS total FROM bookings WHERE user_id='$user_id'"))['total'] ?? 0;
+$upcoming_bookings = mysqli_fetch_assoc(mysqli_query($con, "SELECT COUNT(*) AS total FROM bookings WHERE user_id='$user_id' AND pickup_date >= CURDATE()"))['total'] ?? 0;
 $total_spent = mysqli_fetch_assoc(mysqli_query($con, "SELECT SUM(total_price) AS total FROM bookings WHERE user_id='$user_id' AND status='Confirmed'"))['total'] ?? 0;
 ?>
 
@@ -53,7 +52,7 @@ $total_spent = mysqli_fetch_assoc(mysqli_query($con, "SELECT SUM(total_price) AS
 <body>
 <div class="container mt-4">
   <h2>User Dashboard</h2>
-  <p class="welcome">Welcome back, <strong><?php echo htmlspecialchars($username); ?></strong>👋</p>
+  <p class="welcome">Welcome back, <strong><?php echo htmlspecialchars($user_name); ?></strong> 👋</p>
 
   <div class="row mb-4">
     <div class="col-md-4">
@@ -104,7 +103,9 @@ $total_spent = mysqli_fetch_assoc(mysqli_query($con, "SELECT SUM(total_price) AS
     </div>
   </div>
 </div>
- <?php include("../includes/footer.php"); ?>
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<?php include("../includes/footer.php"); ?>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -5,10 +5,17 @@ require '../../vendor/autoload.php';
 
 use Razorpay\Api\Api;
 
-if(!isset($_SESSION['un'])) {
-    header("location:login.php");
+if(!isset($_SESSION['user_id'])){
+    header("location: login.php");
     exit;
 }
+
+$user_id = $_SESSION['user_id'];
+$message = "";
+// Fetch user details
+$user_sql = "SELECT * FROM users WHERE id='$user_id'";
+$user_res = mysqli_query($con, $user_sql);
+$user = mysqli_fetch_assoc($user_res);
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $_SESSION['user_id'];

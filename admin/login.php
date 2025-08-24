@@ -1,32 +1,28 @@
-<?php 
+<?php
 session_start();
-include("admin_inc/db.php");
+include(__DIR__ . '../admin_inc/db.php'); // ✅ Correct path
 
-if (!$con) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
 
-if (isset($_POST['login'])) {
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
+    // Plain password check (since your DB has plain passwords)
+    $sql = "SELECT * FROM admin WHERE email='$email' AND password='$password'";
+    $res = mysqli_query($con, $sql);
 
-    // ✅ Directly check email + password (plain text)
-    $stmt = $con->prepare("SELECT id, name FROM admin WHERE email = ? AND password = ?");
-    $stmt->bind_param("ss", $email, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 1) {
-        $row = $result->fetch_assoc();
-        $_SESSION['an'] = $row['name'];
-        $_SESSION['user_id'] = $row['id'];  
+    if (mysqli_num_rows($res) === 1) {
+        $row = mysqli_fetch_assoc($res);
+        $_SESSION['admin_id'] = $row['id'];
+        $_SESSION['admin_name'] = $row['name'];
+        $_SESSION['admin_email'] = $row['email'];
         header("Location: dashboard.php");
-        exit();
+        exit;
     } else {
-        $error = "Invalid Email or Password.";
+        $error = "Invalid email or password";
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,6 +30,7 @@ if (isset($_POST['login'])) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Login</title>
 <style>
+/* Your CSS (same as you shared) */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
     font-family: Arial, sans-serif;
@@ -110,10 +107,10 @@ body {
     <img src="assets/images/user.png" alt="Admin Logo">
     <h2>Admin Login</h2>
 
-    <?php if(isset($error)) { echo "<div class='error'>$error</div>"; } ?>
+    <?php if(!empty($error)) { echo "<div class='error'>$error</div>"; } ?>
 
     <form method="POST">
-        <input type="text" name="email" placeholder="Username or Email" required>
+        <input type="text" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="submit" name="login" value="Login">
     </form>

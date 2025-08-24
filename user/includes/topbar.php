@@ -1,3 +1,10 @@
+
+<?php
+// Auto-detect site URL (works for localhost and live server)
+$site_url = "http://" . $_SERVER['HTTP_HOST'] . "/car_rental";
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +34,7 @@
   <!-- NAV -->
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="/car_rental/index.php">
+      <a class="navbar-brand" href="car_rental/index.php">
         <img src="/car_rental/user/assets/images/logo.jpg" alt="logo">
       </a>
 

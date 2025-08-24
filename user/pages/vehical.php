@@ -1,10 +1,20 @@
-<?php include("dash_head.php"); ?>
 <?php
- include("../config/db.php"); 
-if (!isset($_SESSION['un'])) {
-    header("location:login.php");
+include("dash_head.php");
+include("../config/db.php");
+
+// Check login
+if(!isset($_SESSION['user_id'])){
+    header("location: login.php");
     exit;
 }
+
+$user_id = $_SESSION['user_id'];
+$message = "";
+
+// Fetch user details
+$user_sql = "SELECT * FROM users WHERE id='$user_id'";
+$user_res = mysqli_query($con, $user_sql);
+$user = mysqli_fetch_assoc($user_res);
 ?>
 
 <!DOCTYPE html>

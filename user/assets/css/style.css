@@ -115,7 +115,7 @@
        content: "";
        position: absolute;
        inset: 0;
-       background-image: url('/car_rental/user/assets/images/bmw-dark.png');
+       background-image: url('/car_rental/user/assets/images/banner2.png');
        background-size: cover;
        background-position: center;
        filter: brightness(.45) contrast(1.02) saturate(1.05);

@@ -7,13 +7,14 @@ if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-if (!isset($_SESSION['user_id'])) {
+// ✅ Match session keys with login.php
+if (!isset($_SESSION['admin_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// ✅ Safely set admin name (avoid undefined index error)
-$adminName = isset($_SESSION['an']) ? $_SESSION['an'] : "Admin";
+// ✅ Safely set admin name
+$adminName = isset($_SESSION['admin_name']) ? $_SESSION['admin_name'] : "Admin";
 ?>
 <nav class="navbar navbar-expand topbar mb-4 static-top shadow">
 

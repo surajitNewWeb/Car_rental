@@ -1,25 +1,47 @@
 <?php
-$con = mysqli_connect("localhost", "root", "", "car_rental");
+include("../config/db.php"); // database connection
 
-if (!$con) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+$message = ""; // for showing error/success messages
 
 if (isset($_POST['sign'])) {
-    $n = $_POST['name'];
-    $e = $_POST['email'];
-    $p = $_POST['pass'];
+    $username = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $password = $_POST['pass'];
 
-    $ins="INSERT INTO users SET username='$n', email='$e', password='$p' "; 
-     if($con->query($ins)) {
-         echo "<script>alert('✅ Sign up successful!');</script>"; 
-           header("location:login.php");  
-     } else{
-            echo "<script>alert('❌ Error: Could not sign up');</script>";
-         } 
+    // validate inputs
+    if (!empty($username) && !empty($email) && !empty($password)) {
+
+        // check if email already exists
+        $checkEmail = $con->prepare("SELECT id FROM users WHERE email = ?");
+        $checkEmail->bind_param("s", $email);
+        $checkEmail->execute();
+        $checkEmail->store_result();
+
+        if ($checkEmail->num_rows > 0) {
+            $message = "<p style='color:red; text-align:center;'>Email already exists!</p>";
+        } else {
+            // hash password
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            // insert new user
+            $stmt = $con->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $username, $email, $hashedPassword);
+
+            if ($stmt->execute()) {
+                $message = "<p style='color:lime; text-align:center;'>Account created successfully!</p>";
+                 header("Location: login.php");
+            } else {
+                $message = "<p style='color:red; text-align:center;'>Error: " . $stmt->error . "</p>";
+            }
+
+            $stmt->close();
+        }
+        $checkEmail->close();
+    } else {
+        $message = "<p style='color:red; text-align:center;'>All fields are required!</p>";
+    }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -119,6 +141,11 @@ if (isset($_POST['sign'])) {
             text-decoration: none;
         }
 
+        .message {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -144,6 +171,7 @@ if (isset($_POST['sign'])) {
 
     <div class="form-container">
         <h2>Create Account</h2>
+        <?php if ($message) echo "<div class='message'>$message</div>"; ?>
         <form method="post" action="">
             <div class="form-group">
                 <label>Full Name</label>
@@ -167,4 +195,5 @@ if (isset($_POST['sign'])) {
 </body>
 
 </html>
+
 <?php $con->close(); ?>

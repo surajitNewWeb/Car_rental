@@ -2,12 +2,19 @@
 include("dash_head.php");
 include("../config/db.php");
 
-// ✅ Check login
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
+// Check login
+if(!isset($_SESSION['user_id'])){
+    header("location: login.php");
+    exit;
 }
+
 $user_id = $_SESSION['user_id'];
+$message = "";
+
+// Fetch user details
+$user_sql = "SELECT * FROM users WHERE id='$user_id'";
+$user_res = mysqli_query($con, $user_sql);
+$user = mysqli_fetch_assoc($user_res);
 
 // ✅ Fetch user bookings
 $sql = "SELECT b.id, b.pickup_date, b.return_date, b.total_price, b.payment_status, 

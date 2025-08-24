@@ -1,7 +1,7 @@
 <?php include("dash_head.php"); ?>
 <?php
 include("../config/db.php"); 
-if (!isset($_SESSION['un'])) {
+if (!isset($_SESSION['user_name'])) {
     header("location:login.php");
     exit;
 }
