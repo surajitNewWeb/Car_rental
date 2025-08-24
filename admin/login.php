@@ -1,6 +1,6 @@
 <?php
 session_start();
-include(__DIR__ . '../admin_inc/db.php'); // ✅ Correct path
+include("admin_inc/db.php"); // ✅ Correct path
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
